@@ -1,4 +1,5 @@
-
+import {cart, addToCart, updateCartCount} from '../data/cart.js'
+import {products} from '../data/products.js'
 
 //use Accumulator pattern to generate the html of every product, looping through the list with forEach(), every loop
 //access the object and use its varaibles to fill the html for every product.
@@ -59,56 +60,13 @@ products.forEach((products)=>{
     document.querySelector('.js-products-grid').innerHTML=productsHtml;
 })
 
-//reduce the cart array to summ all of the quantity items and set said sum to the cart div inner text
-//used after every 'add to cart' button press
-const updateCartCount = (cart)=>{
-  let totalItems = cart.reduce((total, product)=>{
-    return total + product.quantity;
-  }, 0);
-  const carDiv = document.querySelector('.js-cart-qty');
-  carDiv.textContent = totalItems;
-}
 
 //add item to cart list
 document.querySelectorAll('.js-add-to-cart').
 forEach((buttonElement)=>{
-  //add button event listener, when clicked, if the item is in the list, add +1 to the qty, if not the add the item
-  //object
 
-
-  //new variable for each button, saves the current timer for the added to cart msg
-  //if there is one, used later to reset msg timer if the button is clicked multiple times
-  let addedMessageTimeoutId;
-
-    buttonElement.addEventListener('click', ()=>{
-        let productId = buttonElement.dataset.productId;
-        let seen = false;
-
-        //create a reference to the select element of the current button being pressed, used to get the value to add 
-        //to the cart
-        const currentSelect = document.querySelector(`.js-select-${productId}`);
-
-
-        //will not go inside on first ever cart, it will go straight to push a new item to the cart
-        cart.forEach((item)=>{
-            if(productId === item.productId){
-              //instead of adding +1 on every click, make sure to take into account the
-              //number of items selected on the options list  
-                item.quantity+=parseInt(currentSelect.value);
-                seen = true;
-            }
-        })
-
-        //push item to the cart
-        if (!seen){
-            productId = productId;
-            quantity = parseInt(currentSelect.value);
-            cart.push({productId, quantity})
-        }
-        console.log(cart)
-        updateCartCount(cart);
-
-        const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
+    function showAddedMessage(productId){
+      const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
         addedMessage.classList.add('added-to-cart-op1');
 
         //if there already exists a timeout then reset the timer
@@ -122,6 +80,20 @@ forEach((buttonElement)=>{
 
         //set the button's timer variable equal to the current timer created
         addedMessageTimeoutId = timeoutID;
+    }
+    //new variable for each button, saves the current timer for the added to cart msg
+    //if there is one, used later to reset msg timer if the button is clicked multiple times
+    let addedMessageTimeoutId;
+    buttonElement.addEventListener('click', ()=>{
+        let productId = buttonElement.dataset.productId;
+        //create a reference to the select element of the current button being pressed, used to get the value to add 
+        //to the cart
+        const currentSelect = document.querySelector(`.js-select-${productId}`);
+        addToCart(productId, currentSelect);
+        updateCartCount(cart);
+        showAddedMessage(productId);
+
+        
     });
     
 });
