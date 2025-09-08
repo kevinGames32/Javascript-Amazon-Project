@@ -30,7 +30,7 @@ products.forEach((products)=>{
           </div>
 
           <div class="product-quantity-container">
-            <select class="js-select">
+            <select class="js-select-${products.id}">
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -46,7 +46,7 @@ products.forEach((products)=>{
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart js-added-to-cart-${products.id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
@@ -71,15 +71,22 @@ const updateCartCount = (cart)=>{
 
 //add item to cart list
 document.querySelectorAll('.js-add-to-cart').
-forEach((buttonElement, currentElementIdx)=>{
+forEach((buttonElement)=>{
   //add button event listener, when clicked, if the item is in the list, add +1 to the qty, if not the add the item
   //object
+
+
+  //new variable for each button, saves the current timer for the added to cart msg
+  //if there is one, used later to reset msg timer if the button is clicked multiple times
+  let addedMessageTimeoutId;
+
     buttonElement.addEventListener('click', ()=>{
         let productId = buttonElement.dataset.productId;
         let seen = false;
 
-        //create a list of all the select options object
-        const ItemList = document.querySelectorAll('.js-select');
+        //create a reference to the select element of the current button being pressed, used to get the value to add 
+        //to the cart
+        const currentSelect = document.querySelector(`.js-select-${productId}`);
 
 
         //will not go inside on first ever cart, it will go straight to push a new item to the cart
@@ -87,21 +94,36 @@ forEach((buttonElement, currentElementIdx)=>{
             if(productId === item.productId){
               //instead of adding +1 on every click, make sure to take into account the
               //number of items selected on the options list  
-              item.quantity+=ItemList[currentElementIdx].selectedIndex+1;
+                item.quantity+=parseInt(currentSelect.value);
                 seen = true;
             }
         })
 
         //push item to the cart
         if (!seen){
-            cart.push({
-                productId:productId,
-                quantity: ItemList[currentElementIdx].selectedIndex+1
-            })
+            productId = productId;
+            quantity = parseInt(currentSelect.value);
+            cart.push({productId, quantity})
         }
         console.log(cart)
         updateCartCount(cart);
+
+        const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
+        addedMessage.classList.add('added-to-cart-op1');
+
+        //if there already exists a timeout then reset the timer
+        if(addedMessageTimeoutId){
+          clearTimeout(addedMessageTimeoutId);
+        }
+        //set 2 sec timer for the message to show
+        const timeoutID = setTimeout(() => {
+          addedMessage.classList.remove('added-to-cart-op1');
+        }, 2000);
+
+        //set the button's timer variable equal to the current timer created
+        addedMessageTimeoutId = timeoutID;
     });
     
 });
+
 
