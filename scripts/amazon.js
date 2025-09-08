@@ -52,35 +52,56 @@ products.forEach((products)=>{
           </div>
 
           <button class="add-to-cart-button button-primary js-add-to-cart"
-          data-product-name="${products.name}">
+          data-product-id="${products.id}">
             Add to Cart
           </button>
         </div>`;
     document.querySelector('.js-products-grid').innerHTML=productsHtml;
 })
 
-//create a list of all the select options object
-const ItemList = document.querySelectorAll('.js-select');
+//reduce the cart array to summ all of the quantity items and set said sum to the cart div inner text
+//used after every 'add to cart' button press
+const updateCartCount = (cart)=>{
+  let totalItems = cart.reduce((total, product)=>{
+    return total + product.quantity;
+  }, 0);
+  const carDiv = document.querySelector('.js-cart-qty');
+  carDiv.textContent = totalItems;
+}
 
+//add item to cart list
 document.querySelectorAll('.js-add-to-cart').
 forEach((buttonElement, currentElementIdx)=>{
-
+  //add button event listener, when clicked, if the item is in the list, add +1 to the qty, if not the add the item
+  //object
     buttonElement.addEventListener('click', ()=>{
-        let productName = buttonElement.dataset.productName;
+        let productId = buttonElement.dataset.productId;
         let seen = false;
+
+        //create a list of all the select options object
+        const ItemList = document.querySelectorAll('.js-select');
+
+
+        //will not go inside on first ever cart, it will go straight to push a new item to the cart
         cart.forEach((item)=>{
-            if(productName === item.productName){
-                item.quantity+=ItemList[currentElementIdx].selectedIndex+1;
+            if(productId === item.productId){
+              //instead of adding +1 on every click, make sure to take into account the
+              //number of items selected on the options list  
+              item.quantity+=ItemList[currentElementIdx].selectedIndex+1;
                 seen = true;
             }
         })
+
+        //push item to the cart
         if (!seen){
             cart.push({
-                productName:productName,
+                productId:productId,
                 quantity: ItemList[currentElementIdx].selectedIndex+1
             })
         }
         console.log(cart)
+        updateCartCount(cart);
     });
     
 });
+
