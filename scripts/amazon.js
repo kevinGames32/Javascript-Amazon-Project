@@ -3,9 +3,8 @@ import {products} from '../data/products.js'
 
 //use Accumulator pattern to generate the html of every product, looping through the list with forEach(), every loop
 //access the object and use its varaibles to fill the html for every product.
-
 let productsHtml='';
-
+updateCartCount();
 products.forEach((products)=>{
      productsHtml+=
     `<div class="product-container">
@@ -63,7 +62,7 @@ products.forEach((products)=>{
 
 //add item to cart list
 document.querySelectorAll('.js-add-to-cart').
-forEach((buttonElement)=>{
+forEach((buttonElement, currentItemIdx)=>{
 
     function showAddedMessage(productId){
       const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
@@ -84,16 +83,16 @@ forEach((buttonElement)=>{
     //new variable for each button, saves the current timer for the added to cart msg
     //if there is one, used later to reset msg timer if the button is clicked multiple times
     let addedMessageTimeoutId;
+
     buttonElement.addEventListener('click', ()=>{
         let productId = buttonElement.dataset.productId;
+        const {id, image, priceCents, name} = products[currentItemIdx];
         //create a reference to the select element of the current button being pressed, used to get the value to add 
         //to the cart
         const currentSelect = document.querySelector(`.js-select-${productId}`);
-        addToCart(productId, currentSelect);
-        updateCartCount(cart);
+        addToCart(id, image, priceCents, name, currentSelect);
+        updateCartCount();
         showAddedMessage(productId);
-
-        
     });
     
 });
