@@ -1,5 +1,5 @@
 import { deliveryOptions } from '../data/deliveryOptions.js';
-import {cart, removeFromCart, saveToStorage, updateCheckoutHeader, updateQuantity} from '../data/cart.js';
+import {cart, removeFromCart, saveToStorage, updateCheckoutHeader, updateQuantity, updateDeliveryOption} from '../data/cart.js';
 import { calculateDollars } from './utils/utils.js';
 
 let checkoutHtml='';
@@ -55,7 +55,7 @@ updateCheckoutHeader();
 function generateDeliveryOptionsHtml(itemId, itemDeliveryId){
   let finalHtml='';
   const currentDay = dayjs();
-
+//i need to get the date based on what option is checked
   deliveryOptions.forEach((deliveryOption)=>{
     const deliveryDay = currentDay.add(deliveryOption.deliveryDays, 'days');
     const finalDateString = deliveryDay.format('dddd, MMMM D');
@@ -63,7 +63,8 @@ function generateDeliveryOptionsHtml(itemId, itemDeliveryId){
     const isChecked = deliveryOption.id === itemDeliveryId ? true:false
     finalHtml+=
     `
-      <div class="delivery-option">
+      <div class="delivery-option js-delivery-option" data-delivery-option =${deliveryOption.id} 
+      data-product-id="${itemId}">
         <input type="radio" ${isChecked ? 'Checked':''}
           class="delivery-option-input"
           name="delivery-option-${itemId}">
@@ -131,6 +132,7 @@ document.querySelectorAll('.js-update')
     
 
   });
+
 function calculateSelectedDelivery(itemDeliveryId){
   let selectedOption;
     let currentDay = dayjs();
@@ -141,7 +143,19 @@ function calculateSelectedDelivery(itemDeliveryId){
       
       }
     });
-    let deliveryDayOffset = currentDay.add(selectedOption.deliveryDays, 'days');
-    let deliveryDayString = deliveryDayOffset.format('dddd, MMMM D ');
-    return deliveryDayString;
+  let deliveryDayOffset = currentDay.add(selectedOption.deliveryDays, 'days');
+  let deliveryDayString = deliveryDayOffset.format('dddd, MMMM D ');
+
+
+  return deliveryDayString;
 }
+
+//select all option divs, for every div attach a listener, every div has its own dataset
+//every listener will have the data of every div saved
+//if said div is pressed, get the data of what is the number of the option and the item id
+document.querySelectorAll('.js-delivery-option').forEach((divElement)=>{
+  divElement.addEventListener('click', ()=>{
+    const{deliveryOption, productId}=divElement.dataset;
+    updateDeliveryOption(productId,deliveryOption);
+  });
+});

@@ -62,3 +62,14 @@ export function updateQuantity(productId, quantity){
     updateCheckoutHeader();
     saveToStorage();
 }
+
+
+//take a product id and a new optionid and update the cart item 
+export function updateDeliveryOption(productId, newOptionId){
+    cart.forEach((cartItem)=>{
+        if(cartItem.id === productId){
+            cartItem.deliveryOption = newOptionId;
+            saveToStorage();
+        }
+    });
+}
