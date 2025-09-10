@@ -19,8 +19,9 @@ export function addToCart(id, image, priceCents, name, currentSelect){
 
         //push item to the cart
         if (!seen){
+            let deliveryOption = '1';
             let quantity = parseInt(currentSelect.value);
-            cart.push({id,image,priceCents,name, quantity})
+            cart.push({id,image,priceCents,name, quantity, deliveryOption})
         }
         console.log(cart)
         saveToStorage();
