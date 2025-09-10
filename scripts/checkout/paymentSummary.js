@@ -3,12 +3,48 @@ import {cart, removeFromCart, saveToStorage, updateCheckoutHeader, updateQuantit
 import { calculateDollars } from '../../scripts/utils/utils.js';
 
 export default function renderPaymentSummary(){
-    const summaryItemCount = document.querySelector('.js-order-summary-item-count');
-    summaryItemCount.textContent = `items (${String(document.querySelector('.js-return-home').textContent)}):`;
     let currentBulkItemPrice = calculateBulkitemPrice();
     let currentShippingTotal = getShippingTotal();
     let totalBeforeTax = currentBulkItemPrice + currentShippingTotal; 
     let taxCents = (totalBeforeTax) * 0.1;
+    let grandTotal = taxCents + totalBeforeTax;
+    let finalHtml = `
+    <div class="payment-summary-title">
+            Order Summary
+          </div>
+
+          <div class="payment-summary-row">
+            <div class="js-order-summary-item-count"></div>
+            <div class="payment-summary-money">$${calculateDollars(currentBulkItemPrice)}</div>
+          </div>
+
+          <div class="payment-summary-row">
+            <div>Shipping &amp; handling:</div>
+            <div class="payment-summary-money">$${calculateDollars(currentShippingTotal)}</div>
+          </div>
+
+          <div class="payment-summary-row subtotal-row">
+            <div>Total before tax:</div>
+            <div class="payment-summary-money">$${calculateDollars(totalBeforeTax)}</div>
+          </div>
+
+          <div class="payment-summary-row">
+            <div>Estimated tax (10%):</div>
+            <div class="payment-summary-money">$${calculateDollars(taxCents)}</div>
+          </div>
+
+          <div class="payment-summary-row total-row">
+            <div>Order total:</div>
+            <div class="payment-summary-money">$${calculateDollars(grandTotal)}</div>
+          </div>
+
+          <button class="place-order-button button-primary">
+            Place your order
+          </button>
+    `;
+    document.querySelector('.js-payment-summary').innerHTML = finalHtml;
+    const summaryItemCount = document.querySelector('.js-order-summary-item-count');
+    summaryItemCount.textContent = `items (${String(document.querySelector('.js-return-home').textContent)}):`;
     
 }
 function calculateBulkitemPrice(){

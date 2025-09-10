@@ -121,18 +121,22 @@ export default function renderOrderSummary(){
     document.querySelectorAll('.save-quantity-link')
     .forEach((link) => {
       link.addEventListener('click', () => {
-          
+              
         const productId = link.dataset.productId;
         const newQuantity = Number(document.querySelector(`.js-quantity-input${productId}`).value);
         updateQuantity(productId, newQuantity);
         renderPaymentSummary();
+        renderOrderSummary();
 
         const container = document.querySelector(
           `.js-${productId}-container`
         );
-        container.classList.remove('is-editing-quantity');
-        const quantityLabel = document.querySelector(`.js-quantity-label${productId}`);
-        quantityLabel.innerHTML = newQuantity;
+        if(container){
+          container.classList.remove('is-editing-quantity');
+          const quantityLabel = document.querySelector(`.js-quantity-label${productId}`);
+          quantityLabel.innerHTML = newQuantity;
+        }
+        
       });
      
       
@@ -165,6 +169,7 @@ export default function renderOrderSummary(){
       const{deliveryOption, productId}=divElement.dataset;
       updateDeliveryOption(productId,deliveryOption);
       renderOrderSummary();
+      renderPaymentSummary();
     });
   });
 }

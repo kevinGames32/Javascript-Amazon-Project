@@ -55,8 +55,10 @@ export function updateCheckoutHeader(){
 
 export function updateQuantity(productId, quantity){
     cart.forEach((cartItem)=>{
-        if(cartItem.id === productId){
+        if((cartItem.id === productId) && quantity !== 0){
             cartItem.quantity = quantity
+        } else if(quantity == 0){
+            removeFromCart(productId);
         }
     });
     updateCheckoutHeader();
