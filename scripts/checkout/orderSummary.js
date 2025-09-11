@@ -97,9 +97,7 @@ export default function renderOrderSummary(){
           const currentId = link.dataset.productId;
           removeFromCart(currentId);
           deleteItemContainer(currentId);
-          updateCheckoutHeader();
           renderPaymentSummary();
-          saveToStorage();
       })
   });
 
