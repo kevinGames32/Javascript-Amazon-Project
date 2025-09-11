@@ -1,6 +1,28 @@
 //create a list of all products so that hmtl is less cluttered and possible future product addition without hardcoding
 //html
-export const products = [
+
+import calculateDollars from "../scripts/utils/utils.js"
+
+class Products{
+  constructor(item){
+    this.id = item.id;
+    this.image = item.image;
+    this.name = item.name;
+    this.rating = item.rating;
+    this.priceCents = item.priceCents;
+    this.keywords = item.keywords
+  }
+  getRatingUrl(){
+    return `images/ratings/rating-${this.rating.stars*10}.png`;
+  };
+  getRatingCount(){
+    return this.rating.count;
+  };
+  getPricedollars({places = 2}={}){
+    return calculateDollars({priceCents: this.priceCents, places});
+  };
+}
+export let products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
     image: "images/products/athletic-cotton-socks-6-pairs.jpg",
@@ -659,4 +681,6 @@ export const products = [
       "mens"
     ]
   }
-];
+].map((item)=>{
+  return new Products(item);
+})

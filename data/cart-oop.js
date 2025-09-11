@@ -1,8 +1,7 @@
+
+//Pasacal case 
 class Cart{
-    constructor(){
-    
-    this.cartItems = undefined;
-}
+    cartItems = undefined;
     loadFromStorage(){
         this.cartItems = JSON.parse(localStorage.getItem('cart-oop') || "[]")
     }
@@ -77,3 +76,5 @@ let cart = new Cart();
 cart.loadFromStorage();
 cart.addToCart('123', 'asd',599,'basket',{"value":1});
 console.log(cart)
+
+

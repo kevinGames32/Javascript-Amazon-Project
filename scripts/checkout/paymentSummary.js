@@ -1,6 +1,6 @@
 import { deliveryOptions } from '../../data/deliveryOptions.js'
 import {cart, removeFromCart, saveToStorage, updateCheckoutHeader, updateQuantity, updateDeliveryOption} from '../../data/cart.js';
-import { calculateDollars } from '../../scripts/utils/utils.js';
+import calculateDollars from '../../scripts/utils/utils.js';
 
 export default function renderPaymentSummary(){
     let currentBulkItemPrice = calculateBulkitemPrice();
@@ -15,27 +15,27 @@ export default function renderPaymentSummary(){
 
           <div class="payment-summary-row">
             <div class="js-order-summary-item-count"></div>
-            <div class="payment-summary-money">$${calculateDollars(currentBulkItemPrice)}</div>
+            <div class="payment-summary-money">$${calculateDollars({priceCents:currentBulkItemPrice})}</div>
           </div>
 
           <div class="payment-summary-row">
             <div>Shipping &amp; handling:</div>
-            <div class="payment-summary-money">$${calculateDollars(currentShippingTotal)}</div>
+            <div class="payment-summary-money">$${calculateDollars({priceCents:currentShippingTotal})}</div>
           </div>
 
           <div class="payment-summary-row subtotal-row">
             <div>Total before tax:</div>
-            <div class="payment-summary-money">$${calculateDollars(totalBeforeTax)}</div>
+            <div class="payment-summary-money">$${calculateDollars({priceCents:totalBeforeTax})}</div>
           </div>
 
           <div class="payment-summary-row">
             <div>Estimated tax (10%):</div>
-            <div class="payment-summary-money">$${calculateDollars(taxCents)}</div>
+            <div class="payment-summary-money">$${calculateDollars({priceCents:taxCents})}</div>
           </div>
 
           <div class="payment-summary-row total-row">
             <div>Order total:</div>
-            <div class="payment-summary-money">$${calculateDollars(grandTotal)}</div>
+            <div class="payment-summary-money">$${calculateDollars({priceCents:grandTotal})}</div>
           </div>
 
           <button class="place-order-button button-primary">

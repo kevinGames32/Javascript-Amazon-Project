@@ -1,6 +1,6 @@
 import { deliveryOptions } from '../../data/deliveryOptions.js'
 import {cart, removeFromCart, saveToStorage, updateCheckoutHeader, updateQuantity, updateDeliveryOption} from '../../data/cart.js';
-import { calculateDollars } from '../../scripts/utils/utils.js';
+import calculateDollars from '../../scripts/utils/utils.js';
 import renderPaymentSummary from './paymentSummary.js';
 
 
@@ -11,7 +11,7 @@ export default function renderOrderSummary(){
       const itemId = cartItem.id;
       const itemImg = cartItem.image;
       const itemName = cartItem.name;
-      const itemPrice = calculateDollars(cartItem.priceCents);
+      const itemPrice = calculateDollars({priceCents:cartItem.priceCents});
       const itemQuantity = cartItem.quantity;
       const itemDeliveryId = cartItem.deliveryOption; // delivery opt 1 as default
 
@@ -63,7 +63,7 @@ export default function renderOrderSummary(){
     deliveryOptions.forEach((deliveryOption)=>{
       const deliveryDay = currentDay.add(deliveryOption.deliveryDays, 'days');
       const finalDateString = deliveryDay.format('dddd, MMMM D');
-      const priceString = (deliveryOption.priceCents === 0 ? 'FREE - Shipping': '$' + String(calculateDollars(deliveryOption.priceCents))+' - Shipping');
+      const priceString = (deliveryOption.priceCents === 0 ? 'FREE - Shipping': '$' + String(calculateDollars({priceCents:deliveryOption.priceCents}))+' - Shipping');
       const isChecked = deliveryOption.id === itemDeliveryId ? true:false
       finalHtml+=
       `
