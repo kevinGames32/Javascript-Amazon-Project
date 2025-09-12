@@ -48,6 +48,7 @@ export default function renderPaymentSummary(){
     
 }
 function calculateBulkitemPrice(){
+  cart
     let bulkItemPrice = cart.reduce((total, cartItem)=>{
         return total + (cartItem.priceCents * cartItem.quantity)
     }, 0);
