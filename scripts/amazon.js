@@ -6,6 +6,7 @@ import {products} from '../data/products.js'
 let productsHtml='';
 updateCartCount();
 products.forEach((products)=>{
+  const isClothing = products.type === 'clothing';
      productsHtml+=
     `<div class="product-container">
           <div class="product-image-container">
@@ -43,7 +44,7 @@ products.forEach((products)=>{
               <option value="10">10</option>
             </select>
           </div>
-
+          ${isClothing ? products.extraInfoHTML(): ''}
           <div class="product-spacer"></div>
 
           <div class="added-to-cart js-added-to-cart-${products.id}">
@@ -86,11 +87,10 @@ forEach((buttonElement, currentItemIdx)=>{
 
     buttonElement.addEventListener('click', ()=>{
         let productId = buttonElement.dataset.productId;
-        const {id, image, priceCents, name} = products[currentItemIdx];
         //create a reference to the select element of the current button being pressed, used to get the value to add 
         //to the cart
         const currentSelect = document.querySelector(`.js-select-${productId}`);
-        addToCart(id, image, priceCents, name, currentSelect);
+        addToCart(productId, currentSelect);
         updateCartCount();
         showAddedMessage(productId);
     });

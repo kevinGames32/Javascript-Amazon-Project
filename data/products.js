@@ -22,6 +22,18 @@ class Products{
     return calculateDollars({priceCents: this.priceCents, places});
   };
 }
+class Clothing extends Products {
+  sizeChartLink;
+  type;
+  constructor(item){
+    super(item);
+    this.sizeChartLink = item.sizeChartLink;
+    this.type = item.type;
+  }
+  extraInfoHTML(){
+    return `<a href="${this.sizeChartLink}" target ="_blank">Size chart</a>`
+  }
+};
 export let products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -682,5 +694,12 @@ export let products = [
     ]
   }
 ].map((item)=>{
+  if(item.type === "clothing"){
+    console.log(item)
+    return new Clothing(item);
+    
+  }
   return new Products(item);
-})
+});
+
+

@@ -1,3 +1,4 @@
+import { products } from "./products.js";
 export let cart = JSON.parse(localStorage.getItem('cart') || "[]");
 
 
@@ -5,9 +6,18 @@ export function saveToStorage(){
     localStorage.setItem('cart', JSON.stringify(cart));
     
 }
-
-export function addToCart(id, image, priceCents, name, currentSelect){
+export function getMatchingObject(id){
+    let matchingObj;
+        products.forEach((object)=>{
+            if(object.id == id){
+                matchingObj = object
+            }
+        })
+        return matchingObj;
+    };
+export function addToCart(id, currentSelect){
       let seen = false;
+      let matchingItem = getMatchingObject(id);
         cart.forEach((item)=>{
             if(id === item.id){
               //instead of adding +1 on every click, make sure to take into account the
@@ -21,7 +31,10 @@ export function addToCart(id, image, priceCents, name, currentSelect){
         if (!seen){
             let deliveryOption = '1';
             let quantity = parseInt(currentSelect.value);
-            cart.push({id,image,priceCents,name, quantity, deliveryOption})
+            matchingItem.deliveryOption =deliveryOption;
+            matchingItem.quantity =quantity
+            cart.push(matchingItem)
+        
         }
         console.log(cart)
         saveToStorage();
@@ -30,8 +43,8 @@ export function addToCart(id, image, priceCents, name, currentSelect){
 //reduce the cart array to summ all of the quantity items and set said sum to the cart div inner text
 //used after every 'add to cart' button press
 export const updateCartCount = ()=>{
-  let totalItems = cart.reduce((total, product)=>{
-    return total + product.quantity;
+  let totalItems = cart.reduce((total, cartItem)=>{
+    return total + cartItem.quantity;
   }, 0);
   const carDiv = document.querySelector('.js-cart-qty');
   carDiv.textContent = totalItems;
