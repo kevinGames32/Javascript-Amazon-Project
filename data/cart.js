@@ -102,3 +102,13 @@ export function loadCart(func){
     xhr.open('GET', 'https://supersimplebackend.dev/cart');
     xhr.send();
 };
+export function convertToRequestSchema(){
+    let requestCart=[];
+      cart.forEach((cartItem)=>{
+        const productId = cartItem.id;
+        const quantity = cartItem.quantity;
+        const deliveryOptionId = cartItem.deliveryOption;
+        requestCart.push({productId: productId,quantity:quantity,deliveryOptionId:deliveryOptionId})
+      });
+    return requestCart;
+}
