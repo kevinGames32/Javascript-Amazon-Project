@@ -4,6 +4,20 @@ import { loadProducts } from "../data/products.js";
 import { loadCart } from "../data/cart.js";
 //import '../data/cart-oop.js'
 //import '../data/backendPractice.js'
+
+async function loadPage() {
+    await loadProducts();
+    const value = await new Promise((resolve)=>{
+        loadCart(()=>{
+            resolve('val1');
+        });
+    });
+    console.log(value);
+    renderOrderSummary();
+    renderPaymentSummary();
+}
+loadPage();
+/*
 Promise.all([loadProducts(),new Promise((resolve)=>{
     loadCart(()=>{
         resolve();
@@ -12,3 +26,4 @@ Promise.all([loadProducts(),new Promise((resolve)=>{
     renderOrderSummary();
     renderPaymentSummary();
 });
+*/
