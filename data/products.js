@@ -2,6 +2,7 @@
 //html
 
 import calculateDollars from "../scripts/utils/utils.js"
+import { getMatchingObject } from "./cart.js";
 
 class Products{
   constructor(item){
@@ -718,6 +719,17 @@ export function loadProducts(){
   });
   return promise;
 };
+
+export function getMatchingProduct(id){
+  let matchingItem;
+  products.forEach((product)=>{
+    console.log(product.id);
+    if(product.id === id){
+      matchingItem = product
+    }
+  })
+  return matchingItem;
+}
 
 /* classic https request
 export function loadProducts(func){

@@ -7,9 +7,9 @@ export function saveToStorage(){
     
 }
 export function getMatchingObject(id){
-    let matchingObj;
+    let matchingObj={};
         products.forEach((object)=>{
-            if(object.id == id){
+            if(object.id === id){
                 matchingObj = object
             }
         })
