@@ -90,6 +90,7 @@ export default function renderOrderSummary(){
 
   function deleteItemContainer(currentId){
       document.querySelector(`.js-${currentId}-container`).remove();
+
   };
 
   document.querySelectorAll('.js-delete').forEach((link)=>{
@@ -134,12 +135,12 @@ export default function renderOrderSummary(){
           const quantityLabel = document.querySelector(`.js-quantity-label${productId}`);
           quantityLabel.innerHTML = newQuantity;
         }
+        if(newQuantity === 0){
+          deleteItemContainer(productId);
+          
+        }
         
       });
-     
-      
-      
-
     });
 
   function calculateSelectedDelivery(itemDeliveryId){

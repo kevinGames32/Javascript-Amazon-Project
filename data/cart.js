@@ -59,25 +59,28 @@ export function removeFromCart(id){
     })
     cart = newCart;
     updateCheckoutHeader();
+    saveToStorage();
 }
 export function updateCheckoutHeader(){
     let itemQuantity = cart.reduce((total, cartItem)=>{
         return total+cartItem.quantity;
     }, 0);
     document.querySelector('.js-return-home').innerHTML= itemQuantity || "0";
-    saveToStorage();
+    
 }
 
 export function updateQuantity(productId, quantity){
     cart.forEach((cartItem)=>{
         if((cartItem.id === productId) && quantity !== 0){
             cartItem.quantity = quantity
-        } else if(quantity == 0){
+        } else if(quantity === 0){
             removeFromCart(productId);
+            
         }
     });
     updateCheckoutHeader();
     saveToStorage();
+    
 }
 
 

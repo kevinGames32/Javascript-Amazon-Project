@@ -3,13 +3,11 @@ import {products, loadProducts} from '../data/products.js'
 
 //use Accumulator pattern to generate the html of every product, looping through the list with forEach(), every loop
 //access the object and use its varaibles to fill the html for every product.
-new Promise((resolve)=>{
-  loadProducts(()=>{
-    resolve();
-  });
-}).then(()=>{
-  renderProductsgrid();
-})
+
+loadProducts().then(()=>{
+  renderProductsgrid()
+});
+
 function renderProductsgrid(){
   let productsHtml='';
   updateCartCount();
